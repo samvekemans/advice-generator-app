@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <title>Frontend Mentor | Advice generator app</title>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="inner">
+      <h2 class="advice"></h2>
+      <div class="textWrapper">
+        <p class="text"></p>
+      </div>
+      <svg class="pattern" width="444" height="16" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" fill-rule="evenodd">
+          <path fill="#4F5D74" d="M0 8h196v1H0zM248 8h196v1H248z" />
+          <g transform="translate(212)" fill="#CEE3E9">
+            <rect width="6" height="16" rx="3" />
+            <rect x="14" width="6" height="16" rx="3" />
+          </g>
+        </g>
+      </svg>
+      <svg class="mobilePattern" width="295" height="16" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" fill-rule="evenodd">
+          <path fill="#4F5D74" d="M0 8h122v1H0zM173 8h122v1H173z" />
+          <g transform="translate(138)" fill="#CEE3E9">
+            <rect width="6" height="16" rx="3" />
+            <rect x="14" width="6" height="16" rx="3" />
+          </g>
+        </g>
+      </svg>
+      <button class="diceWrapper">
+        <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M20 0H4a4.005 4.005 0 0 0-4 4v16a4.005 4.005 0 0 0 4 4h16a4.005 4.005 0 0 0 4-4V4a4.005 4.005 0 0 0-4-4ZM7.5 18a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm0-9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm4.5 4.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm4.5 4.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm0-9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"
+            fill="#202733" /></svg>
+      </button>
+    </div>
+
+  </div>
+</body>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;800&display=swap');
+
+  *,
+  html {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: hsl(218, 23%, 16%);
+  }
+
+  .wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .inner {
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 370px;
+    width: 600px;
+    border-radius: 20px;
+    padding: 50px 80px;
+    background-color: hsl(217, 19%, 24%);
+  }
+  
+  @media (max-width: 700px) {
+    .inner {
+      padding: 40px 40px;
+      height: 370px;
+      width: 90vw;
+      border-radius: 10px;
+    }
+    .pattern{
+      display: none;
+    }
+    svg.mobilePattern{
+      display: block;
+      height: 40px;
+    }
+  }
+
+  .mobilePattern{
+    display: none;
+  }
+
+  .diceWrapper {
+    position: absolute;
+    bottom: -30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: hsl(150, 100%, 66%);
+    padding: 18px;
+    border-radius: 100%;
+    border: none;
+    cursor: pointer;
+  }
+
+  .diceWrapper:hover {
+    box-shadow: 0px 0px 30px hsl(150, 100%, 66%);
+  }
+
+  .advice {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    color: hsl(150, 100%, 66%);
+    font-size: 20px;
+  }
+
+  .pattern {
+    height: 50px;
+  }
+
+  .textWrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .text {
+    font-family: 'Manrope', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: hsl(193, 38%, 86%);
+    margin-bottom: 20px;
+  }
+</style>
+<script>
+  const dice = document.querySelector('.diceWrapper');
+  const text = document.querySelector('.text');
+  const id = document.querySelector('.advice');
+
+  handleFetch();
+
+  dice.addEventListener('click', handleFetch);
+
+  function handleFetch() {
+    fetch('https://api.adviceslip.com/advice')
+      .then(response => {
+        return response.json();
+      }).then(adviceData => {
+        const data = adviceData.slip;
+        text.innerText = `"${data.advice}"`
+        id.innerText = `Advice #${data.id}`
+      }).catch(error => {
+        console.log(error);
+      })
+  }
+</script>
+
+</html>
